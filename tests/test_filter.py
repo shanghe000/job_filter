@@ -3,6 +3,9 @@ import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+import subprocess
+import sys
+import os
 from unittest.mock import patch
 
 from openpyxl import Workbook, load_workbook
@@ -115,6 +118,14 @@ class WorkbookTest(unittest.TestCase):
     def test_negative_years_and_changed_extension_are_rejected(self):
         with self.assertRaises(ValueError): filter_workbook(self.src, self.dst, {**CFG, 'years': -1})
         with self.assertRaises(ValueError): filter_workbook(self.src, self.root/'out.xlsm', CFG)
+
+    def test_cli_works_with_non_chinese_output_encoding(self):
+        cli = Path(__file__).resolve().parents[1] / 'filter_cli.py'
+        result = subprocess.run([sys.executable, str(cli), str(self.src), str(self.dst), '--majors', '计算机'],
+                                capture_output=True, env={**os.environ, 'PYTHONIOENCODING': 'ascii'})
+        self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8'))
+        self.assertIn('完成', result.stdout.decode('utf-8'))
+        self.assertTrue(self.dst.exists())
 
 
 if __name__ == '__main__':

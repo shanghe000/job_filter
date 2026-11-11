@@ -6,6 +6,10 @@ from filter_core import filter_workbook
 
 
 def main():
+    # Redirected output on Windows can default to a non-Chinese code page.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, 'reconfigure'):
+            stream.reconfigure(encoding='utf-8', errors='backslashreplace')
     parser = argparse.ArgumentParser(description='离线筛选 Excel 公考职位表。结果仅供初筛，报名前请人工复核。')
     parser.add_argument('source')
     parser.add_argument('destination')
