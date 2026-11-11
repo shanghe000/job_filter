@@ -76,4 +76,6 @@ jobs:
             echo 'Version already exists. Refusing to replace it.'
             exit 1
           fi
-          gh release create "$VERSION" release/* --repo "$GH_REPO" --target "$TARGET_SHA" --title "Job Filter $VERSION" --generate-notes --draft
+          args=(--repo "$GH_REPO" --target "$TARGET_SHA" --title "Job Filter $VERSION" --generate-notes --draft)
+          if [[ "$VERSION" == *-* ]]; then args+=(--prerelease); fi
+          gh release create "$VERSION" release/* "${args[@]}"
