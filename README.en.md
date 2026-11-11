@@ -6,6 +6,8 @@
 
 A local-first Python utility for Chinese civil-service job spreadsheets, with a desktop UI and a headless CLI. Filter by degree, major keywords, graduate status, work experience, and political affiliation. All sample data is synthetic.
 
+![Actual desktop interface](docs/images/desktop.png)
+
 ## Quick start
 
 Python 3.10+ is required; the GUI also requires Tcl/Tk 8.6+.
